@@ -34,6 +34,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 10px; /* Add rounded corners */
         }
         .action-bar a {
             color: #ffffff;
@@ -46,6 +47,7 @@
         }
         .logo {
             height: 40px;
+            border-radius: 50%; /* Make the icon rounded */
         }
         .big-header {
             font-family: 'Hubot Sans';
@@ -59,22 +61,47 @@
             text-align: center;
             margin-top: 20px;
         }
+        .sub-sub-header {
+            font-family: 'Hubot Sans';
+            font-size: 24px; /* Font size for sub-subheading */
+            text-align: center;
+            margin-top: 20px;
+        }
+        .sub-sub-sub-header {
+            font-family: 'Hubot Sans';
+            font-size: 14px; /* Font size for sub-sub-subheading */
+            text-align: center;
+            margin-top: 20px;
+        }
+        ::selection {
+            background: gray; /* Set selection background color to gray */
+            color: white; /* Set selection text color to white */
+        }
+        .body-image {
+            display: block;
+            margin: 50px auto;
+            max-width: 100%;
+            height: auto;
+        }
     </style>
     <header>
         <div class="action-bar">
             <div>
-                <img src="https://github.com/eli3162/eli3162.github.io/blob/main/logo.png?raw=true" alt="Logo" class="logo">
+                <img src="https://github.com/eli3162/eli3162.github.io/blob/main/icon.png?raw=true" alt="Logo" class="logo">
             </div>
             <div>
                 <a href="eli3162.github.io">Home</a>
-                <a href="eli3162.github.io/about">About</a>
-                <a href="eli3162.github.io/services">Services</a>
-                <a href="eli3162.github.io/contact">Contact</a>
+                <a href="eli3162.github.io/about">About Me</a>
+                <a href="eli3162.github.io/contact">Contact Me</a>
             </div>
         </div>
     </header>
     <body>
         <h1 class="big-header">Ethan Li</h1>
-        <p class="sub-header">Hello!</p>
+        <p class="sub-header">I'm a kid who likes coding and building electronics and computers.</p>
+        <p class="sub-sub-header">I primarily code in Python and HTML.</p>
+        <img src="https://github.com/eli3162/eli3162.github.io/blob/main/raspberry-pi-5.webp?raw=true" alt="Raspberry Pi 5" class="body-image">
+        <p class="sub-sub-sub-header">Raspberry Pi 5 Copyright Raspberry Pi Trading LTD</p>
+        <h3 class="sub-sub-header">Raspberry PIs are my main computing platform and I use them for everyday work.</h3>
     </body>
 </html>
