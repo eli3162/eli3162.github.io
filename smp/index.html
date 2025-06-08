@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Join Ethan's SMP</title>
+  <link rel="icon" href="https://github.com/eli3162/eli3162.github.io/blob/main/icon.png?raw=true" type="image/png">
+
+  <style>
+    @font-face {
+      font-family: 'Minecraftia';
+      src: url('https://github.com/eli3162/eli3162.github.io/raw/main/Minecraftia-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Dark mode by default (will be toggled by JS) */
+    body {
+      font-family: 'Minecraftia', monospace, sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.light {
+      background-color: #f5f5f5;
+      color: #222;
+    }
+
+    .chat-box {
+      max-width: 600px;
+      margin: 40px auto 20px;
+      padding: 20px;
+      position: relative;
+    }
+
+    #messages {
+      height: 300px;
+      overflow-y: scroll;
+      border: 1px solid #444;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #1e1e1e;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    body.light #messages {
+      background: #fff;
+      border-color: #ccc;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      color: inherit;
+    }
+
+    .message .avatar {
+      background: #444;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      text-align: center;
+      line-height: 24px;
+      font-weight: bold;
+      margin-right: 5px;
+      user-select: none;
+      vertical-align: middle;
+      color: white;
+      transition: background 0.3s ease;
+      font-size: 14px;
+    }
+    body.light .message .avatar {
+      background: #888;
+      color: #222;
+    }
+
+    #online-users {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+    body.light #online-users {
+      color: #666;
+    }
+
+    input[type="text"] {
+      font-family: 'Minecraftia', monospace, sans-serif;
+      font-size: 14px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #222;
+      color: white;
+      outline: none;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    body.light input[type="text"] {
+      background-color: #fff;
+      color: #222;
+      border-color: #ccc;
+    }
+
+    button {
+      font-family: 'Minecraftia', monospace, sans-serif;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: none;
+      background-color: #3a86ff;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #2a66cc;
+    }
+
+    /* SETTINGS BUTTON */
+    #settingsBtn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background-color: #3a86ff;
+      border: none;
+      border-radius: 24px;
+      width: 48px;
+      height: 48px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      z-index: 1000;
+    }
+    #settingsBtn:hover {
+      background-color: #2a66cc;
+    }
+
+    /* SETTINGS PANEL */
+    #settingsPanel {
+      position: fixed;
+      top: 70px;
+      right: 12px;
+      width: 280px;
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
+      color: white;
+      font-family: 'Minecraftia', monospace, sans-serif;
+      display: none;
+      z-index: 999;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.light #settingsPanel {
+      background: #fff;
+      color: #222;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    }
+    #settingsPanel label {
+      display: block;
+      margin-bottom: 12px;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    /* TOGGLE SWITCH */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      vertical-align: middle;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      border-radius: 26px;
+      transition: 0.4s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+    input:checked + .slider {
+      background-color: #3a86ff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    /* AVATAR INPUT */
+    #avatarInput {
+      width: 50px;
+      font-size: 20px;
+      text-align: center;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #222;
+      color: white;
+      outline: none;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    body.light #avatarInput {
+      background-color: #fff;
+      color: #222;
+      border-color: #ccc;
+    }
+    #avatarInput::placeholder {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <button id="settingsBtn" title="Settings ⚙️">⚙️</button>
+
+  <div id="settingsPanel" aria-hidden="true">
+    <label for="darkModeToggle">Dark Mode</label>
+    <label class="switch">
+      <input type="checkbox" id="darkModeToggle" />
+      <span class="slider"></span>
+    </label>
+
+    <label for="avatarInput" style="margin-top: 20px;">Set your avatar (one letter or emoji):</label>
+    <input type="text" id="avatarInput" maxlength="2" placeholder="A" />
+  </div>
+
+  <div class="chat-box">
+    <h1>Join Ethan's SMP</h1>
+    <div id="online-users">Online users: 0</div>
+    <div id="messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+    <input type="text" id="msgInput" placeholder="Say something..." style="width: 80%;" aria-label="Message input">
+    <button onclick="sendMessage()" aria-label="Send message">Send</button>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyANrNf1NkOUhx6quTxsXEvr0f4hkRBuYQ0",
+      authDomain: "join-ethans-smp.firebaseapp.com",
+      projectId: "join-ethans-smp",
+      storageBucket: "join-ethans-smp.appspot.com",
+      messagingSenderId: "906203862944",
+      appId: "1:906203862944:web:cbd97845ad1906cc73b6c5",
+      databaseURL: "https://join-ethans-smp-default-rtdb.firebaseio.com/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    let currentUser;
+    let currentAvatar = localStorage.getItem('avatar') || null;
+
+    // Elements
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const avatarInput = document.getElementById('avatarInput');
+
+    // Toggle settings panel
+    settingsBtn.addEventListener('click', () => {
+      const isHidden = settingsPanel.style.display === 'none' || settingsPanel.style.display === '';
+      settingsPanel.style.display = isHidden ? 'block' : 'none';
+      settingsPanel.setAttribute('aria-hidden', !isHidden);
+    });
+
+    // Dark mode initialization based on system preference or saved setting
+    function initDarkMode() {
+      const saved = localStorage.getItem('darkMode');
+      if (saved === null) {
+        // no saved preference, use system preference
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setDarkMode(systemPrefersDark);
+        darkModeToggle.checked = systemPrefersDark;
+      } else {
+        const isDark = saved === 'true';
+        setDarkMode(isDark);
+        darkModeToggle.checked = isDark;
+      }
+    }
+
+    // Apply dark/light mode to body and save preference
+    function setDarkMode(isDark) {
+      if (isDark) {
+        document.body.classList.remove('light');
+      } else {
+        document.body.classList.add('light');
+      }
+      localStorage.setItem('darkMode', isDark);
+    }
+
+    darkModeToggle.addEventListener('change', () => {
+      setDarkMode(darkModeToggle.checked);
+    });
+
+    // Avatar input initialization
+    function initAvatar() {
+      if (currentAvatar) {
+        avatarInput.value = currentAvatar;
+      } else {
+        avatarInput.value = 'A'; // default if none
+        currentAvatar = 'A';
+      }
+    }
+
+    avatarInput.addEventListener('input', () => {
+      let val = avatarInput.value.trim();
+      if (val.length === 0) return; // don't update on empty input
+      if (val.length > 2) val = val.slice(0, 2); // limit max 2 chars for emoji or letter
+      currentAvatar = val;
+      avatarInput.value = val;
+      localStorage.setItem('avatar', currentAvatar);
+      updateAvatarsInMessages();
+    });
+
+    // Helper: update all your messages' avatars when you change it
+    function updateAvatarsInMessages() {
+      const messages = document.querySelectorAll('.message');
+      messages.forEach(msg => {
+        if (msg.dataset.user === currentUser.email) {
+          const avatarSpan = msg.querySelector('.avatar');
+          if (avatarSpan) {
+            avatarSpan.textContent = currentAvatar;
+          }
+        }
+      });
+    }
+
+    // Firebase Authentication: login or register
+    async function loginOrRegister(email, password) {
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        return userCredential.user;
+      } catch (error) {
+        if (error.code === "auth/user-not-found") {
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          return userCredential.user;
+        } else {
+          alert("Auth error: " + error.message);
+          throw error;
+        }
+      }
+    }
+
+    // Show a message in the chat
+    function showMessage(data) {
+      const { text, user, timestamp } = data;
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message";
+      msgDiv.dataset.user = user;
+
+      // Use currentAvatar if the user is you, else use first letter uppercase of user email
+      let avatarToShow = user === currentUser.email ? currentAvatar : user[0].toUpperCase();
+
+      const date = new Date(timestamp).toLocaleTimeString();
+      msgDiv.innerHTML = `<span class="avatar">${avatarToShow}</span><strong>${user}</strong> <em>${date}</em>: ${text}`;
+      const messagesContainer = document.getElementById("messages");
+      messagesContainer.appendChild(msgDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      if (text.includes("@all") && currentUser.email !== user) {
+        alert(`@all from ${user}: ${text}`);
+      }
+    }
+
+    // Send a message to Firebase
+    function sendMessage() {
+      const input = document.getElementById("msgInput");
+      const text = input.value.trim();
+      if (text !== "") {
+        db.ref("messages").push({
+          text,
+          user: currentUser.email,
+          timestamp: Date.now()
+        });
+        input.value = "";
+      }
+    }
+
+    // Setup Firebase realtime listeners
+    function setupChat() {
+      db.ref("messages").on("child_added", snapshot => {
+        showMessage(snapshot.val());
+      });
+
+      const presenceRef = db.ref("presence/" + currentUser.uid);
+      presenceRef.set(true);
+      presenceRef.onDisconnect().remove();
+
+      db.ref("presence").on("value", snap => {
+        const count = snap.numChildren();
+        document.getElementById("online-users").innerText = `Online users: ${count}`;
+      });
+    }
+
+    // On page load: authenticate user, init chat, dark mode, avatar
+    window.onload = async () => {
+      initDarkMode();
+      initAvatar();
+
+      const email = prompt("Enter your email:");
+      const password = prompt("Enter your password:");
+
+      try {
+        currentUser = await loginOrRegister(email, password);
+        setupChat();
+      } catch (e) {
+        alert("Unable to login or register.");
+      }
+    };
+  </script>
+</body>
+</html>
